@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const wwidth= Dimensions.get("screen").width
 function Todo(){
    const[input,setinput]=useState("")
-    const[tasks,settask]=useState(["life","night"])
+    const[tasks,settask]=useState(["life"])
     useEffect(()=>{
        getdata(); 
     },[])
@@ -26,6 +26,7 @@ function Todo(){
         }
         useEffect(()=>{
             set()
+            
         },[tasks])
    
     

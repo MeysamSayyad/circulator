@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { Settings, StyleSheet, Text, View } from 'react-native';
 import { Switch } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { TouchableHighlight } from 'react-native';
@@ -9,6 +9,7 @@ import { inline } from 'react-native-web/dist/cjs/exports/StyleSheet/compiler';
 import { TouchableOpacity } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-web';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default Calculator
 
@@ -20,6 +21,24 @@ const [isEnabled, setIsEnabled] = useState(true);
   const operations=["+","-","*","/"]
   let [result,setres]=useState("")
   let [calcul,setcal]=useState("")
+  let[color,setcolor]=useState(true)
+  const get=async()=>{
+    try{
+      const jsoncolor= await AsyncStorage.getItem("colorkey")
+    setcolor(JSON.parse(jsoncolor))
+    alert("getset")
+    }
+    catch{
+      alert(JSON.parse(jsoncolor))
+      
+    }
+    
+
+  }
+  useEffect(()=>{
+    get()
+    
+  },[])
   function del(){
     setres(result.slice(0,-1))
   }
@@ -46,7 +65,7 @@ const [isEnabled, setIsEnabled] = useState(true);
     <View style={styles.container}>
       <View  style={{flex:2}} ><Text onLongPress={()=>setres(calcul.toString())} style={styles.text}>{calcul}</Text></View>
       <View style={styles.result}><Text style={{color:"white",textAlign:"right",marginRight:100,marginTop:105,fontSize:18,opacity:0.6}}>{result}</Text>
-      <TouchableOpacity onPress={del} onLongPress={clear} style={{height:50,width:50,position:'absolute',marginLeft:320,marginTop:75,borderRadius:50}}><Text style={{height:60,width:60,color:"black",fontSize:20,opacity:0.7,backgroundColor:"orange",textAlign:"center",paddingTop:17,borderRadius:50}}>DEL</Text></TouchableOpacity></View>
+      <TouchableOpacity onPress={del} onLongPress={clear} style={{height:50,width:50,position:'absolute',marginLeft:320,marginTop:75,borderRadius:50}}><Text style={{height:60,width:60,color:"black",fontSize:20,opacity:0.7,backgroundColor:color ? "white":"orange",textAlign:"center",paddingTop:17,borderRadius:50}}>DEL</Text></TouchableOpacity></View>
       <View style={{flexDirection:"row",flex:3,borderTopWidth:1,borderTopColor:"#ffa60045"}}> 
         <View style={styles.numbers}>
         {numbers.map((p,key)=>{return(
